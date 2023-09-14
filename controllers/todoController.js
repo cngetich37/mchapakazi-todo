@@ -1,9 +1,10 @@
-const asyncHandler = require('express-async-handler')
+const Todo = require("../models/todoModel");
+const asyncHandler = require("express-async-handler");
 // @desc Get All Todos
 // @route GET /api/todos
 // @access public
 
-const getTodos = asyncHandler(async(req, res) => {
+const getTodos = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Get All Todos" });
 });
 
@@ -11,21 +12,27 @@ const getTodos = asyncHandler(async(req, res) => {
 // @route  POST /api/todos/
 // @access public
 
-const createTodo = asyncHandler(async(req, res) => {
-  const { name, date,day, time } = req.body;
-   console.log('The request is:', req.body);
+const createTodo = asyncHandler(async (req, res) => {
+  const { name, date, day, time } = req.body;
+  console.log("The request is:", req.body);
   if (!name || !date || !day || !time) {
     res.status(400);
     throw new Error("All fields are mandatory");
   }
-  res.status(201).json({ message: "create Todo" });
+  const create_todo = await Todo.create({
+    name,
+    date,
+    day,
+    time,
+  });
+  res.status(201).json(create_todo);
 });
 
 // @desc Get a Todo
 // @route GET /api/todos/:id
 // @access public
 
-const getTodo = asyncHandler(async(req, res) => {
+const getTodo = asyncHandler(async (req, res) => {
   res.status(200).json({ message: `get a todo with ${req.params.id}` });
 });
 
@@ -33,7 +40,7 @@ const getTodo = asyncHandler(async(req, res) => {
 // @route PUT /api/todos/:id
 // @access public
 
-const updateTodo = asyncHandler(async(req, res) => {
+const updateTodo = asyncHandler(async (req, res) => {
   res.status(200).json({ message: `Update a todo with ${req.params.id}` });
 });
 
@@ -41,7 +48,7 @@ const updateTodo = asyncHandler(async(req, res) => {
 // @route DELETE /api/todos/:id
 // @access public
 
-const deleteTodo = asyncHandler(async(req, res) => {
+const deleteTodo = asyncHandler(async (req, res) => {
   res.status(200).json({ message: `Delete a todo with ${req.params.id}` });
 });
 
