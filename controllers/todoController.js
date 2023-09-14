@@ -5,7 +5,8 @@ const asyncHandler = require("express-async-handler");
 // @access public
 
 const getTodos = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get All Todos" });
+  const get_all_todos = await Todo.find()
+  res.status(200).json(get_all_todos);
 });
 
 // @desc Create Todos
@@ -33,7 +34,8 @@ const createTodo = asyncHandler(async (req, res) => {
 // @access public
 
 const getTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `get a todo with ${req.params.id}` });
+  const get_a_todo = await Todo.findOne(req.id);
+  res.status(200).json(get_a_todo);
 });
 
 // @desc Update a Todo
