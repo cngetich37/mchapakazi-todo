@@ -5,7 +5,11 @@ const asyncHandler = require("express-async-handler");
 // @access public
 
 const getTodos = asyncHandler(async (req, res) => {
-  const get_all_todos = await Todo.find()
+  const get_all_todos = await Todo.find();
+  if (get_all_todos.length == 0) {
+    res.status(404);
+    throw new Error("Todo Not Found!, Kindly Add One");
+  }
   res.status(200).json(get_all_todos);
 });
 
@@ -34,7 +38,11 @@ const createTodo = asyncHandler(async (req, res) => {
 // @access public
 
 const getTodo = asyncHandler(async (req, res) => {
-  const get_a_todo = await Todo.findOne(req.id);
+  const get_a_todo = await Todo.findById(req.params.id);
+  if (!get_a_todo) {
+    res.status(404);
+    throw new Error("Todo Not Found!");
+  }
   res.status(200).json(get_a_todo);
 });
 
@@ -43,7 +51,15 @@ const getTodo = asyncHandler(async (req, res) => {
 // @access public
 
 const updateTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Update a todo with ${req.params.id}` });
+  const update_my_todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+
+  if (!update_my_todo) {
+    res.status(404);
+    throw new Error("Todo Not Found!");
+  }
+  res.status(200).json(update_my_todo);
 });
 
 // @desc Delete  a Todo
@@ -51,7 +67,13 @@ const updateTodo = asyncHandler(async (req, res) => {
 // @access public
 
 const deleteTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Delete a todo with ${req.params.id}` });
+  const delete_my_todo = await Todo.findById(req.params.id);
+  if (!delete_my_todo) {
+    res.status(404);
+    throw new Error("No todo found!");
+  }
+  await Todo.deleteOne();
+  res.status(200).json(delete_my_todo);
 });
 
 module.exports = { getTodos, createTodo, getTodo, updateTodo, deleteTodo };
