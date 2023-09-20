@@ -11,6 +11,7 @@ connectDb();
 app.use(cors({origin:'http://localhost:5173'}))
 app.use(express.json());
 app.use("/api/todos", require("./routes/todoRoute"));
+app.use("/api/users", require("./routes/userRoute"));
 app.use(errorHandler)
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
