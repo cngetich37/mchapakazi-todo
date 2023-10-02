@@ -50,13 +50,13 @@ const loginUser = asyncHandler(async (req, res) => {
   }
   try {
     const confirm_login = await User.findOne({ email });
-  if(confirm_login && (await bcrypt.compare(password, confirm_if_user_exists.password)))
+  if(confirm_login && (await bcrypt.compare(password, confirm_login.password)))
   {
     const accessToken = jwt.sign({
         user:{
-            username: confirm_if_user_exists.username,
-            email: confirm_if_user_exists.email,
-            id:confirm_if_user_exists.id
+            username: confirm_login.username,
+            email: confirm_login.email,
+            id:confirm_login.id
         }
     },process.env.ACCESS_TOKEN_SECRET,
     {expiresIn:"1hr"}
