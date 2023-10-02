@@ -49,8 +49,8 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("All fields are mandatory!");
   }
   try {
-    const confirm_if_user_exists = await User.findOne({ email });
-  if(confirm_if_user_exists && (await bcrypt.compare(password, confirm_if_user_exists.password)))
+    const confirm_login = await User.findOne({ email });
+  if(confirm_login && (await bcrypt.compare(password, confirm_if_user_exists.password)))
   {
     const accessToken = jwt.sign({
         user:{
@@ -61,8 +61,8 @@ const loginUser = asyncHandler(async (req, res) => {
     },process.env.ACCESS_TOKEN_SECRET,
     {expiresIn:"1hr"}
     )
-    res.status(200).json({accessToken});
-    // res.status(200).json({message:"Login successful!"});
+    // res.status(200).json({accessToken});
+    res.status(200).json({message:"Login successful!"});
   }
   } catch (error) {
     res.status(500).json({error:"Server Error"});
