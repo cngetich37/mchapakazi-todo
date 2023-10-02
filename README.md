@@ -103,7 +103,7 @@ POST /api/users/login
 
 ```json
 {
-  "accessToken": "your_jwt_token"
+  "message": "Login successful!"
 }
 ```
 
